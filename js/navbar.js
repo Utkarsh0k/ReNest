@@ -4,57 +4,73 @@ async function loadNavbar() {
 
     if (!navbar) return;
 
-    const response = await fetch("components/navbar.html");
+    try {
 
-    navbar.innerHTML = await response.text();
+        const response = await fetch("components/navbar.html");
 
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        navbar.innerHTML = await response.text();
+
+    } catch {
+
+        console.error("Unable to load navbar.");
+
+        return;
+
+    }
+
+    const currentUser = JSON.parse(
+
+        localStorage.getItem("currentUser")
+
+    );
 
     const authNav = document.getElementById("authNav");
 
     if (!authNav) return;
 
-    if (currentUser) {
+    /* ==========================================
+       Active Page
+    ========================================== */
 
-        authNav.innerHTML = `
+    const currentPage = window.location.pathname
+        .split("/")
+        .pop();
 
-            <span class="nav-user">
+    document.querySelectorAll("nav a").forEach(link => {
 
-                Hi, ${currentUser.name}
+        const href = link.getAttribute("href");
 
-            </span>
+        if (href === currentPage) {
 
-            <button
-                id="logoutNavBtn"
-                class="nav-logout">
+            link.classList.add("active-nav");
 
-                Logout
+        }
 
-            </button>
+    });
 
-        `;
+    /* ==========================================
+       Hide Protected Pages
+    ========================================== */
 
-        document
-            .getElementById("logoutNavBtn")
-            .addEventListener("click", () => {
+    if (!currentUser) {
 
-                localStorage.removeItem("currentUser");
+        ["sell.html", "dashboard.html", "profile.html"]
 
-                if (typeof showToast === "function") {
+        .forEach(page => {
 
-                    showToast("Logged Out Successfully", "success");
+            const link = document.querySelector(
 
-                }
+                `nav a[href="${page}"]`
 
-                setTimeout(() => {
+            );
 
-                    window.location.href = "index.html";
+            if (link) {
 
-                }, 800);
+                link.parentElement.style.display = "none";
 
-            });
+            }
 
-    } else {
+        });
 
         authNav.innerHTML = `
 
@@ -66,8 +82,72 @@ async function loadNavbar() {
 
         `;
 
+        return;
+
     }
+
+    /* ==========================================
+       Logged In
+    ========================================== */
+
+    authNav.innerHTML = `
+
+        <span class="nav-user">
+
+            👋 Hi, ${currentUser.name}
+
+        </span>
+
+        <button
+
+            id="logoutNavBtn"
+
+            class="nav-logout"
+
+        >
+
+            Logout
+
+        </button>
+
+    `;
+
+    document
+
+        .getElementById("logoutNavBtn")
+
+        .addEventListener("click", () => {
+
+            localStorage.removeItem(
+
+                "currentUser"
+
+            );
+
+            showToast(
+
+                "Logged Out Successfully",
+
+                "success"
+
+            );
+
+            setTimeout(() => {
+
+                window.location.href =
+
+                    "index.html";
+
+            }, 800);
+
+        });
 
 }
 
-document.addEventListener("DOMContentLoaded", loadNavbar);
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    loadNavbar
+
+);

@@ -153,3 +153,46 @@
     color:#666666;
 
 }
+.dashboard-summary{
+
+    grid-column:1/-1;
+
+    background:#14213d;
+
+    color:#ffffff;
+
+    padding:25px;
+
+    border-radius:16px;
+
+    margin-bottom:10px;
+
+}
+
+.dashboard-summary h2{
+
+    margin-bottom:8px;
+
+}
+
+.dashboard-summary h3{
+
+    color:#fca311;
+
+}
+
+.dashboard-actions{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:20px;
+
+}
+
+.dashboard-actions .primary{
+
+    flex:1;
+
+}

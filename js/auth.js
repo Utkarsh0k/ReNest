@@ -1,4 +1,6 @@
-// ---------- Elements ----------
+/* ==========================================
+   Elements
+========================================== */
 
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
@@ -8,7 +10,19 @@ const toggleText = document.getElementById("toggleText");
 
 let isLogin = true;
 
-// ---------- Toggle Forms ----------
+/* ==========================================
+   Already Logged In
+========================================== */
+
+if (localStorage.getItem("currentUser")) {
+
+    window.location.href = "marketplace.html";
+
+}
+
+/* ==========================================
+   Toggle Forms
+========================================== */
 
 function updateView() {
 
@@ -19,9 +33,10 @@ function updateView() {
 
         formTitle.textContent = "Welcome Back";
 
-        toggleText.innerHTML =
-        `Don't have an account?
-        <span id="toggleLink">Register</span>`;
+        toggleText.innerHTML = `
+            Don't have an account?
+            <span id="toggleLink">Register</span>
+        `;
 
     }
 
@@ -32,56 +47,121 @@ function updateView() {
 
         formTitle.textContent = "Create Account";
 
-        toggleText.innerHTML =
-        `Already have an account?
-        <span id="toggleLink">Login</span>`;
+        toggleText.innerHTML = `
+            Already have an account?
+            <span id="toggleLink">Login</span>
+        `;
 
     }
 
     document
         .getElementById("toggleLink")
-        .addEventListener("click", () => {
+        .onclick = () => {
 
             isLogin = !isLogin;
+
             updateView();
 
-        });
+        };
 
 }
 
 updateView();
 
-// ---------- Local Storage ----------
+/* ==========================================
+   Users
+========================================== */
 
-let users = JSON.parse(localStorage.getItem("users")) || [];
+let users = JSON.parse(
 
-// ---------- Register ----------
+    localStorage.getItem("users")
 
-registerForm.addEventListener("submit", function(e){
+) || [];
+
+/* ==========================================
+   Register
+========================================== */
+
+registerForm.addEventListener("submit", (e) => {
 
     e.preventDefault();
 
-    const name = document.getElementById("registerName").value.trim();
+    const name = document
+        .getElementById("registerName")
+        .value
+        .trim();
 
-    const email = document.getElementById("registerEmail").value.trim().toLowerCase();
+    const email = document
+        .getElementById("registerEmail")
+        .value
+        .trim()
+        .toLowerCase();
 
-    const password = document.getElementById("registerPassword").value;
+    const password = document
+        .getElementById("registerPassword")
+        .value;
 
-    const confirm = document.getElementById("confirmPassword").value;
+    const confirm = document
+        .getElementById("confirmPassword")
+        .value;
 
-    if(password !== confirm){
+    if (name.length < 3) {
 
-        alert("Passwords do not match.");
+        showToast(
+
+            "Name is too short.",
+
+            "error"
+
+        );
 
         return;
 
     }
 
-    const exists = users.find(user => user.email === email);
+    if (password.length < 6) {
 
-    if(exists){
+        showToast(
 
-        alert("Email already exists.");
+            "Password must be at least 6 characters.",
+
+            "error"
+
+        );
+
+        return;
+
+    }
+
+    if (password !== confirm) {
+
+        showToast(
+
+            "Passwords do not match.",
+
+            "error"
+
+        );
+
+        return;
+
+    }
+
+    const exists = users.find(
+
+        user => user.email === email
+
+    );
+
+    if (exists) {
+
+        showToast(
+
+            "Email already registered.",
+
+            "error"
+
+        );
 
         return;
 
@@ -101,27 +181,57 @@ registerForm.addEventListener("submit", function(e){
 
     users.push(user);
 
-    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem(
 
-    showToast("Account Created Successfully");
+        "users",
 
-    isLogin = true;
+        JSON.stringify(users)
 
-    updateView();
+    );
+
+    localStorage.setItem(
+
+        "currentUser",
+
+        JSON.stringify(user)
+
+    );
+
+    showToast(
+
+        "Account Created Successfully!",
+
+        "success"
+
+    );
 
     registerForm.reset();
 
+    setTimeout(() => {
+
+        window.location.href = "marketplace.html";
+
+    }, 1000);
+
 });
 
-// ---------- Login ----------
+/* ==========================================
+   Login
+========================================== */
 
-loginForm.addEventListener("submit", function(e){
+loginForm.addEventListener("submit", (e) => {
 
     e.preventDefault();
 
-    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    const email = document
+        .getElementById("loginEmail")
+        .value
+        .trim()
+        .toLowerCase();
 
-    const password = document.getElementById("loginPassword").value;
+    const password = document
+        .getElementById("loginPassword")
+        .value;
 
     const user = users.find(u =>
 
@@ -130,9 +240,15 @@ loginForm.addEventListener("submit", function(e){
 
     );
 
-    if(!user){
+    if (!user) {
 
-        alert("Invalid email or password.");
+        showToast(
+
+            "Invalid Email or Password.",
+
+            "error"
+
+        );
 
         return;
 
@@ -146,6 +262,18 @@ loginForm.addEventListener("submit", function(e){
 
     );
 
-    window.location.href = "marketplace.html";
+    showToast(
+
+        `Welcome ${user.name}!`,
+
+        "success"
+
+    );
+
+    setTimeout(() => {
+
+        window.location.href = "marketplace.html";
+
+    }, 800);
 
 });

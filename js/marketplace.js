@@ -141,9 +141,9 @@ function displayProducts(productList) {
 
                     <p class="card-price">
 
-                        ₹${product.price}
+    ${formatPrice(product.price)}
 
-                    </p>
+</p>
 
                     <p class="card-seller">
 

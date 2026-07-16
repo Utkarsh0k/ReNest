@@ -1,51 +1,99 @@
 const currentUser = JSON.parse(
-
     localStorage.getItem("currentUser")
-
 );
 
-if(!currentUser){
+if (!currentUser) {
 
     window.location.href = "login.html";
 
 }
 
 document.getElementById("userName").textContent =
-currentUser.name;
+    currentUser.name;
 
 document.getElementById("userEmail").textContent =
-currentUser.email;
+    currentUser.email;
 
 document.getElementById("avatarLetter").textContent =
-currentUser.name.charAt(0).toUpperCase();
+    currentUser.name.charAt(0).toUpperCase();
 
 const products = JSON.parse(
-
     localStorage.getItem("products")
-
 ) || [];
 
-const totalListings = products.filter(product =>
+/* ==========================================
+   User Statistics
+========================================== */
 
-    product.seller === currentUser.name
+const myProducts = products.filter(product =>
 
-).length;
+    product.sellerEmail === currentUser.email
+
+);
+
+const totalListings = myProducts.length;
+
+const totalValue = myProducts.reduce(
+
+    (sum, product) => sum + product.price,
+
+    0
+
+);
 
 document.getElementById("listingCount").textContent =
-totalListings;
+    totalListings;
+
+/* ==========================================
+   Add More Stats
+========================================== */
+
+const stats = document.querySelector(".stats");
+
+stats.innerHTML = `
+
+    <div class="stat">
+
+        <h3>${totalListings}</h3>
+
+        <span>Listings</span>
+
+    </div>
+
+    <div class="stat">
+
+        <h3>₹${totalValue}</h3>
+
+        <span>Total Value</span>
+
+    </div>
+
+`;
+
+/* ==========================================
+   Logout
+========================================== */
 
 document
-.getElementById("logoutBtn")
-.addEventListener("click",()=>{
+    .getElementById("logoutBtn")
+    .addEventListener("click", () => {
 
-    localStorage.removeItem("currentUser");
+        const confirmLogout = confirm(
 
-    showToast("Logged Out","info");
+            "Are you sure you want to logout?"
 
-    setTimeout(()=>{
+        );
 
-        window.location.href="index.html";
+        if (!confirmLogout) return;
 
-    },1000);
+        localStorage.removeItem("currentUser");
 
-});
+        showToast("Logged Out Successfully", "success");
+
+        setTimeout(() => {
+
+            window.location.href = "index.html";
+
+        }, 1000);
+
+    });

@@ -1,3 +1,7 @@
+/* ==========================================
+   ReNest - Sell Item
+========================================== */
+
 const dropArea = document.getElementById("dropArea");
 const imageInput = document.getElementById("imageInput");
 const browseBtn = document.getElementById("browseBtn");
@@ -17,7 +21,7 @@ browseBtn.addEventListener("click", () => {
 });
 
 /* ==========================================
-   Image Preview
+   Image Selection
 ========================================== */
 
 imageInput.addEventListener("change", () => {
@@ -70,7 +74,7 @@ function loadImage(file) {
 
     if (!file.type.startsWith("image/")) {
 
-        showToast("Please upload an image.", "error");
+        showToast("Please upload a valid image.", "error");
 
         return;
 
@@ -91,12 +95,22 @@ function loadImage(file) {
 }
 
 /* ==========================================
-   Submit Form
+   Submit Product
 ========================================== */
 
 sellForm.addEventListener("submit", (e) => {
 
     e.preventDefault();
+
+    const title = document.getElementById("title").value.trim();
+
+    const description = document.getElementById("description").value.trim();
+
+    const price = Number(document.getElementById("price").value);
+
+    const category = document.getElementById("category").value;
+
+    const condition = document.getElementById("condition").value;
 
     if (!imageData) {
 
@@ -106,25 +120,81 @@ sellForm.addEventListener("submit", (e) => {
 
     }
 
-    const products = JSON.parse(localStorage.getItem("products")) || [];
+    if (title.length < 3) {
 
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        showToast("Product title is too short.", "error");
+
+        return;
+
+    }
+
+    if (description.length < 10) {
+
+        showToast("Description should be at least 10 characters.", "error");
+
+        return;
+
+    }
+
+    if (price <= 0) {
+
+        showToast("Please enter a valid price.", "error");
+
+        return;
+
+    }
+
+    if (!category) {
+
+        showToast("Please select a category.", "error");
+
+        return;
+
+    }
+
+    if (!condition) {
+
+        showToast("Please select the item condition.", "error");
+
+        return;
+
+    }
+
+    const currentUser = JSON.parse(
+
+        localStorage.getItem("currentUser")
+
+    );
+
+    const products = JSON.parse(
+
+        localStorage.getItem("products")
+
+    ) || [];
 
     const product = {
 
         id: Date.now(),
 
-        title: document.getElementById("title").value,
+        title,
 
-        description: document.getElementById("description").value,
+        description,
 
-        price: Number(document.getElementById("price").value),
+        price,
 
-        category: document.getElementById("category").value,
+        category,
+
+        condition,
 
         image: imageData,
 
-        seller: currentUser ? currentUser.name : "Anonymous"
+        seller: currentUser ? currentUser.name : "Anonymous",
+
+        sellerEmail: currentUser ? currentUser.email : "",
+
+        status: "Available",
+
+        postedOn: new Date().toLocaleDateString("en-IN")
 
     };
 
@@ -138,7 +208,13 @@ sellForm.addEventListener("submit", (e) => {
 
     );
 
-    showToast("Listing Published!", "success");
+    showToast(
+
+        `"${title}" listed successfully!`,
+
+        "success"
+
+    );
 
     sellForm.reset();
 
@@ -150,6 +226,6 @@ sellForm.addEventListener("submit", (e) => {
 
         window.location.href = "marketplace.html";
 
-    }, 1200);
+    }, 1000);
 
 });

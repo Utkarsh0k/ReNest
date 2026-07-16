@@ -1,28 +1,36 @@
 const currentUser = JSON.parse(
-
     localStorage.getItem("currentUser")
-
 );
 
-const products = JSON.parse(
-
+let products = JSON.parse(
     localStorage.getItem("products")
-
 ) || [];
 
 const container = document.getElementById("myProducts");
 
-const myProducts = products.filter(
+function getMyProducts() {
 
-    product => product.seller === currentUser.name
+    return products.filter(product =>
 
-);
+        product.sellerEmail === currentUser.email
 
-function loadProducts(){
+    );
+
+}
+
+function loadProducts() {
+
+    products = JSON.parse(
+
+        localStorage.getItem("products")
+
+    ) || [];
+
+    const myProducts = getMyProducts();
 
     container.innerHTML = "";
 
-    if(myProducts.length === 0){
+    if (myProducts.length === 0) {
 
         container.innerHTML = `
 
@@ -30,7 +38,19 @@ function loadProducts(){
 
             <h2>No Listings Yet</h2>
 
-            <p>Go to Sell Item and post your first product.</p>
+            <p>
+
+                Start selling your unused items.
+
+            </p>
+
+            <br>
+
+            <a href="sell.html" class="primary">
+
+                Sell Your First Item
+
+            </a>
 
         </div>
 
@@ -40,33 +60,111 @@ function loadProducts(){
 
     }
 
-    myProducts.forEach(product=>{
+    const totalValue = myProducts.reduce(
+
+        (sum, product) => sum + product.price,
+
+        0
+
+    );
+
+    container.innerHTML += `
+
+        <div class="dashboard-summary">
+
+            <h2>
+
+                ${myProducts.length} Listings
+
+            </h2>
+
+            <h3>
+
+                Total Value ${formatPrice(totalValue)}
+
+            </h3>
+
+        </div>
+
+    `;
+
+    myProducts.forEach(product => {
 
         container.innerHTML += `
 
         <div class="dashboard-card">
 
-            <img src="${product.image}">
+            <img
+
+                src="${product.image}"
+
+                alt="${product.title}"
+
+            >
 
             <div class="dashboard-body">
 
-                <h3>${product.title}</h3>
+                <h3>
 
-                <p>${product.category}</p>
+                    ${product.title}
+
+                </h3>
+
+                <p>
+
+                    ${product.category}
+
+                </p>
+
+                <p>
+
+                    Posted:
+
+                    ${product.postedOn}
+
+                </p>
 
                 <div class="dashboard-price">
 
-                    ₹${product.price}
+                   ${formatPrice(product.price)}
 
                 </div>
+
+                <p>
+
+                    Status:
+
+                    <strong>
+
+                        ${product.status}
+
+                    </strong>
+
+                </p>
 
                 <div class="dashboard-actions">
 
                     <button
-                    class="delete-btn"
-                    onclick="deleteProduct(${product.id})">
 
-                    Delete
+                        class="primary"
+
+                        onclick="markSold(${product.id})"
+
+                    >
+
+                        Mark Sold
+
+                    </button>
+
+                    <button
+
+                        class="delete-btn"
+
+                        onclick="deleteProduct(${product.id})"
+
+                    >
+
+                        Delete
 
                     </button>
 
@@ -82,11 +180,51 @@ function loadProducts(){
 
 }
 
-loadProducts();
+function markSold(id) {
 
-function deleteProduct(id){
+    products = products.map(product => {
 
-    const updated = products.filter(
+        if (product.id === id) {
+
+            product.status = "Sold";
+
+        }
+
+        return product;
+
+    });
+
+    localStorage.setItem(
+
+        "products",
+
+        JSON.stringify(products)
+
+    );
+
+    showToast(
+
+        "Listing marked as Sold",
+
+        "success"
+
+    );
+
+    loadProducts();
+
+}
+
+function deleteProduct(id) {
+
+    const confirmDelete = confirm(
+
+        "Delete this listing?"
+
+    );
+
+    if (!confirmDelete) return;
+
+    products = products.filter(
 
         product => product.id !== id
 
@@ -96,16 +234,20 @@ function deleteProduct(id){
 
         "products",
 
-        JSON.stringify(updated)
+        JSON.stringify(products)
 
     );
 
-    showToast("Listing Removed");
+    showToast(
 
-    setTimeout(()=>{
+        "Listing Deleted",
 
-        location.reload();
+        "success"
 
-    },800);
+    );
+
+    loadProducts();
 
 }
+
+loadProducts();
