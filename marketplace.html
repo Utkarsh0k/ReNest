@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Marketplace | ReNest</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/marketplace.css">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Marketplace -->
+
+    <section class="marketplace">
+
+        <div class="marketplace-header">
+
+            <h1>Marketplace</h1>
+
+            <a
+                href="sell.html"
+                class="primary">
+
+                + Sell Item
+
+            </a>
+
+        </div>
+
+        <div class="search-bar">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search products...">
+
+            <select id="categoryFilter">
+
+                <option value="All">
+                    All Categories
+                </option>
+
+                <option value="Books">
+                    Books
+                </option>
+
+                <option value="Electronics">
+                    Electronics
+                </option>
+
+                <option value="Furniture">
+                    Furniture
+                </option>
+
+                <option value="Cycles">
+                    Cycles
+                </option>
+
+                <option value="Accessories">
+                    Accessories
+                </option>
+
+            </select>
+
+        </div>
+
+        <div
+            id="productContainer"
+            class="product-grid">
+
+        </div>
+
+    </section>
+
+    <!-- Toast -->
+
+    <div id="toast"></div>
+
+    <!-- Scripts -->
+
+    <script src="js/script.js"></script>
+
+    <script src="js/navbar.js"></script>
+
+    <script src="js/authGuard.js"></script>
+
+    <script src="js/marketplace.js"></script>
+
+</body>
+
+</html>

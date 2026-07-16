@@ -1,0 +1,141 @@
+/* ==========================================
+   PROFILE
+========================================== */
+
+.profile{
+
+    display:flex;
+
+    justify-content:center;
+
+    padding:70px 20px;
+
+}
+
+.profile-card{
+
+    width:420px;
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    padding:40px;
+
+    text-align:center;
+
+    border:1px solid #e5e5e5;
+
+    box-shadow:0 10px 30px rgba(20,33,61,.10);
+
+}
+
+.avatar{
+
+    width:100px;
+
+    height:100px;
+
+    border-radius:50%;
+
+    background:#14213d;
+
+    color:#ffffff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:auto;
+
+    margin-bottom:25px;
+
+}
+
+.avatar h1{
+
+    font-size:42px;
+
+}
+
+.profile-card h2{
+
+    margin-bottom:10px;
+
+    color:#14213d;
+
+}
+
+.profile-card p{
+
+    color:#666666;
+
+}
+
+.stats{
+
+    margin:35px 0;
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.stat{
+
+    background:#e5e5e5;
+
+    padding:20px 40px;
+
+    border-radius:12px;
+
+}
+
+.stat h3{
+
+    color:#fca311;
+
+    font-size:2rem;
+
+}
+
+.stat span{
+
+    color:#14213d;
+
+    font-weight:500;
+
+}
+
+.logout-btn{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#14213d;
+
+    color:#ffffff;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.logout-btn:hover{
+
+    background:#000000;
+
+}

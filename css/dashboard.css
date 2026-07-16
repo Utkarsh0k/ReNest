@@ -1,0 +1,155 @@
+.dashboard{
+
+    padding:60px 8%;
+
+}
+
+.dashboard h1{
+
+    margin-bottom:35px;
+
+    color:#14213d;
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+
+    gap:30px;
+
+}
+
+.dashboard-card{
+
+    background:#ffffff;
+
+    border:1px solid #e5e5e5;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 15px 35px rgba(20,33,61,.15);
+
+}
+
+.dashboard-card img{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+}
+
+.dashboard-body{
+
+    padding:20px;
+
+}
+
+.dashboard-body h3{
+
+    margin-bottom:10px;
+
+    color:#14213d;
+
+}
+
+.dashboard-body p{
+
+    color:#666666;
+
+    margin-bottom:8px;
+
+}
+
+.dashboard-price{
+
+    color:#fca311;
+
+    font-size:1.5rem;
+
+    font-weight:700;
+
+    margin:15px 0;
+
+}
+
+.dashboard-actions{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.delete-btn{
+
+    flex:1;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#14213d;
+
+    color:#ffffff;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.delete-btn:hover{
+
+    background:#000000;
+
+}
+
+.empty-message{
+
+    text-align:center;
+
+    padding:80px;
+
+    background:#ffffff;
+
+    border-radius:15px;
+
+    border:1px solid #e5e5e5;
+
+}
+
+.empty-message h2{
+
+    color:#14213d;
+
+    margin-bottom:10px;
+
+}
+
+.empty-message p{
+
+    color:#666666;
+
+}
