@@ -10,29 +10,42 @@
 
 :root{
 
-    --bg:#ffffff;
+    --primary:#fca311;
+    --primary-dark:#e58f08;
+
+    --secondary:#14213d;
+
+    --background:#f8fafc;
 
     --surface:#ffffff;
 
-    --surface-light:#e5e5e5;
+    --surface-2:#f1f5f9;
 
-    --primary:#fca311;
+    --border:#e2e8f0;
 
-    --primary-dark:#d48806;
+    --text:#0f172a;
 
-    --heading:#14213d;
+    --muted:#64748b;
 
-    --text:#000000;
+    --success:#16a34a;
 
-    --muted:#666666;
+    --danger:#dc2626;
 
-    --border:#d6d6d6;
+    --warning:#f59e0b;
 
-    --radius:14px;
+    --radius-sm:10px;
 
-    --shadow:0 10px 25px rgba(20,33,61,.08);
+    --radius:16px;
 
-    --transition:.3s ease;
+    --radius-lg:24px;
+
+    --shadow-sm:0 4px 10px rgba(15,23,42,.05);
+
+    --shadow:0 12px 30px rgba(15,23,42,.08);
+
+    --shadow-lg:0 25px 60px rgba(15,23,42,.15);
+
+    --transition:.25s ease;
 
 }
 
@@ -60,7 +73,7 @@ body{
 
     font-family:'Inter',sans-serif;
 
-    background:var(--bg);
+    background:var(--background);
 
     color:var(--text);
 
@@ -106,11 +119,13 @@ button{
 
 nav{
 
-    width:100%;
+    position:sticky;
 
-    height:80px;
+    top:0;
 
-    background:#ffffff;
+    z-index:1000;
+
+    height:78px;
 
     display:flex;
 
@@ -118,17 +133,15 @@ nav{
 
     align-items:center;
 
-    padding:0 8%;
+    padding:0 7%;
 
-    position:sticky;
+    background:rgba(255,255,255,.82);
 
-    top:0;
+    backdrop-filter:blur(18px);
 
-    z-index:100;
+    -webkit-backdrop-filter:blur(18px);
 
-    border-bottom:1px solid var(--border);
-
-    box-shadow:0 2px 12px rgba(0,0,0,.05);
+    border-bottom:1px solid rgba(0,0,0,.06);
 
 }
 
@@ -142,9 +155,15 @@ nav{
 
 .logo img{
 
-    height:55px;
+    height:60px;
 
-    width:auto;
+    transition:.3s;
+
+}
+
+.logo img:hover{
+
+    transform:rotate(-8deg) scale(1.08);
 
 }
 
@@ -154,7 +173,7 @@ nav ul{
 
     align-items:center;
 
-    gap:35px;
+    gap:34px;
 
 }
 
@@ -166,13 +185,45 @@ nav li{
 
 nav li a{
 
-    transition:var(--transition);
+    position:relative;
+
+    font-weight:600;
+
+    color:var(--text);
+
+    transition:.25s;
 
 }
 
 nav li a:hover{
 
     color:var(--primary);
+
+}
+
+nav li a::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:-7px;
+
+    width:0;
+
+    height:2px;
+
+    background:var(--primary);
+
+    transition:.25s;
+
+}
+
+nav li a:hover::after{
+
+    width:100%;
 
 }
 
@@ -183,42 +234,40 @@ nav li a:hover{
 .login-btn,
 .primary{
 
-    background:var(--primary);
+    background:#fca311;
 
     color:#14213d;
 
-    padding:12px 26px;
+    padding:15px 34px;
 
-    border-radius:10px;
+    border-radius:14px;
 
-    font-weight:600;
+    font-weight:700;
 
-    transition:var(--transition);
+    box-shadow:0 12px 30px rgba(252,163,17,.25);
 
 }
 
 .login-btn:hover,
 .primary:hover{
 
-    background:var(--primary-dark);
-
-    color:#ffffff;
+    transform:translateY(-4px);
 
 }
 
 .secondary{
 
-    padding:12px 26px;
+    background:white;
 
-    border:2px solid var(--primary);
+    color:#14213d;
 
-    border-radius:10px;
+    border:2px solid #fca311;
 
-    color:var(--primary);
+    padding:15px 34px;
 
-    background:transparent;
+    border-radius:14px;
 
-    transition:var(--transition);
+    font-weight:700;
 
 }
 
@@ -236,17 +285,17 @@ nav li a:hover{
 
 .hero{
 
-    min-height:85vh;
+    min-height:92vh;
 
-    display:flex;
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
 
     align-items:center;
 
-    justify-content:space-between;
+    gap:80px;
 
-    gap:70px;
-
-    padding:0 8%;
+    padding:0 7%;
 
 }
 
@@ -258,27 +307,29 @@ nav li a:hover{
 
 .hero-text h1{
 
-    font-family:'Poppins',sans-serif;
+    font-size:clamp(3.2rem,6vw,5.4rem);
 
-    font-size:3.8rem;
+    line-height:1.02;
 
-    line-height:1.15;
+    font-weight:800;
 
-    color:var(--heading);
+    color:#0f172a;
 
-    margin-bottom:25px;
+    margin-bottom:28px;
 
 }
 
 .hero-text p{
 
-    max-width:520px;
+    font-size:1.2rem;
 
-    color:var(--muted);
+    line-height:1.9;
 
-    font-size:1.08rem;
+    color:#64748b;
 
-    margin-bottom:35px;
+    max-width:620px;
+
+    margin-bottom:40px;
 
 }
 
@@ -286,13 +337,28 @@ nav li a:hover{
 
     display:flex;
 
-    gap:20px;
+    gap:18px;
+
+    align-items:center;
 
 }
 
 .hero-image{
 
-    flex:1;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+.hero-image img{
+
+    width:100%;
+
+    max-width:720px;
+
+    animation:float 5s ease-in-out infinite;
 
 }
 /* ==========================================
@@ -300,8 +366,6 @@ nav li a:hover{
 ========================================== */
 
 .features{
-
-    padding:90px 8%;
 
     background:#ffffff;
 
@@ -313,7 +377,7 @@ nav li a:hover{
 
     font-family:'Poppins',sans-serif;
 
-    font-size:2.4rem;
+    font-size:clamp(2rem,4vw,3rem);
 
     color:var(--heading);
 
@@ -333,21 +397,17 @@ nav li a:hover{
 
 .card{
 
-    background:var(--surface);
+    background:white;
 
-    border:1px solid var(--border);
-
-    border-radius:var(--radius);
+    border-radius:20px;
 
     padding:35px;
 
-    text-align:center;
+    border:1px solid var(--border);
 
-    box-shadow:var(--shadow);
+    box-shadow:var(--shadow-sm);
 
-    transition:var(--transition);
-
-    font-size:2.3rem;
+    transition:all .25s;
 
 }
 
@@ -355,7 +415,7 @@ nav li a:hover{
 
     transform:translateY(-8px);
 
-    box-shadow:0 18px 40px rgba(20,33,61,.12);
+    box-shadow:var(--shadow-lg);
 
 }
 
@@ -383,9 +443,7 @@ nav li a:hover{
 
 .categories{
 
-    padding:90px 8%;
-
-    background:#e5e5e5;
+    background:var(--surface-2);
 
 }
 
@@ -456,8 +514,6 @@ nav li a:hover{
 ========================================== */
 
 .how-it-works{
-
-    padding:90px 8%;
 
     background:#ffffff;
 
@@ -556,6 +612,8 @@ footer p{
 ========================================== */
 
 section{
+
+    padding:100px 8%;
 
     overflow:hidden;
 
@@ -841,9 +899,21 @@ a,
 .category-card,
 .step,
 .product-card,
-.dashboard-card{
+.dashboard-card,
+.primary,
+.secondary{
 
-    transition:all .3s ease;
+    transition:
+
+        background .25s ease,
+
+        color .25s ease,
+
+        border-color .25s ease,
+
+        transform .25s ease,
+
+        box-shadow .25s ease;
 
 }
 
@@ -865,9 +935,9 @@ img{
 
 .container{
 
-    width:min(1200px,90%);
+    width:min(1280px,92%);
 
-    margin:auto;
+    margin-inline:auto;
 
 }
 /* ==========================================

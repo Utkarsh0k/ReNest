@@ -31,7 +31,7 @@ function updateView() {
         loginForm.style.display = "flex";
         registerForm.style.display = "none";
 
-        formTitle.textContent = "Welcome Back";
+        formTitle.textContent = "Welcome";
 
         toggleText.innerHTML = `
             Don't have an account?
