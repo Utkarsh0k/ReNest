@@ -2,9 +2,9 @@
    MARKETPLACE
 ========================================== */
 
-.marketplace{
+.marketplace {
 
-    padding:60px 8%;
+    padding: 60px 8%;
 
 }
 
@@ -12,29 +12,29 @@
    HEADER
 ========================================== */
 
-.marketplace-header{
+.marketplace-header {
 
-    display:flex;
+    display: flex;
 
-    justify-content:space-between;
+    justify-content: space-between;
 
-    align-items:center;
+    align-items: center;
 
-    margin-bottom:35px;
+    margin-bottom: 35px;
 
-    gap:20px;
+    gap: 20px;
 
-    flex-wrap:wrap;
+    flex-wrap: wrap;
 
 }
 
-.marketplace-header h1{
+.marketplace-header h1 {
 
-    font-size:2.5rem;
+    font-size: 2.5rem;
 
-    color:#14213d;
+    color: #14213d;
 
-    font-family:'Poppins',sans-serif;
+    font-family: 'Poppins', sans-serif;
 
 }
 
@@ -42,69 +42,69 @@
    SEARCH BAR
 ========================================== */
 
-.search-bar{
+.search-bar {
 
-    display:flex;
+    display: flex;
 
-    gap:20px;
+    gap: 20px;
 
-    margin-bottom:40px;
+    margin-bottom: 40px;
 
-    flex-wrap:wrap;
-
-}
-
-.search-bar input{
-
-    flex:1;
-
-    min-width:250px;
-
-    padding:14px 18px;
-
-    border:1px solid #d6d6d6;
-
-    border-radius:10px;
-
-    background:#ffffff;
-
-    outline:none;
-
-    transition:.3s;
+    flex-wrap: wrap;
 
 }
 
-.search-bar input:focus{
+.search-bar input {
 
-    border-color:#fca311;
+    flex: 1;
 
-    box-shadow:0 0 0 3px rgba(252,163,17,.15);
+    min-width: 250px;
 
-}
+    padding: 14px 18px;
 
-.search-bar select{
+    border: 1px solid #d6d6d6;
 
-    width:220px;
+    border-radius: 10px;
 
-    padding:14px;
+    background: #ffffff;
 
-    border-radius:10px;
+    outline: none;
 
-    border:1px solid #d6d6d6;
-
-    background:#ffffff;
-
-    outline:none;
-
-    transition:.3s;
+    transition: .3s;
 
 }
 
-.search-bar select:focus{
+.search-bar input:focus {
 
-    border-color:#fca311;
+    border-color: #fca311;
 
-    box-shadow:0 0 0 3px rgba(252,163,17,.15);
+    box-shadow: 0 0 0 3px rgba(252, 163, 17, .15);
+
+}
+
+.search-bar select {
+
+    width: 220px;
+
+    padding: 14px;
+
+    border-radius: 10px;
+
+    border: 1px solid #d6d6d6;
+
+    background: #ffffff;
+
+    outline: none;
+
+    transition: .3s;
+
+}
+
+.search-bar select:focus {
+
+    border-color: #fca311;
+
+    box-shadow: 0 0 0 3px rgba(252, 163, 17, .15);
 
 }
 
@@ -112,13 +112,13 @@
    PRODUCT GRID
 ========================================== */
 
-.product-grid{
+.product-grid {
 
-    display:grid;
+    display: grid;
 
-    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 
-    gap:30px;
+    gap: 30px;
 
 }
 
@@ -126,37 +126,54 @@
    PRODUCT CARD
 ========================================== */
 
-.product-card{
+.product-card {
 
-    background:#ffffff;
+    background: white;
 
-    border-radius:16px;
+    border-radius: 22px;
 
-    overflow:hidden;
+    overflow: hidden;
 
-    border:1px solid #e5e5e5;
+    border: 1px solid var(--border);
 
-    box-shadow:0 8px 20px rgba(20,33,61,.08);
+    transition: .3s;
 
-    transition:.3s;
-
-}
-
-.product-card:hover{
-
-    transform:translateY(-8px);
-
-    box-shadow:0 16px 35px rgba(20,33,61,.15);
+    box-shadow: var(--shadow-sm);
 
 }
 
-.product-card img{
+.product-card:hover {
 
-    width:100%;
+    transform: translateY(-10px);
 
-    height:220px;
+    box-shadow: var(--shadow-lg);
 
-    object-fit:cover;
+}
+
+.product-card img {
+
+    width: 100%;
+
+    aspect-ratio: 1/1;
+
+    object-fit: cover;
+
+    transition: .4s;
+
+}
+
+.product-card:hover img {
+
+    transform: scale(1.06);
+
+}
+.product-meta{
+
+    color:var(--muted);
+
+    font-size:.9rem;
+
+    margin-top:8px;
 
 }
 
@@ -164,99 +181,97 @@
    CARD BODY
 ========================================== */
 
-.card-body{
+.card-body {
 
-    padding:20px;
-
-}
-
-.card-category{
-
-    display:inline-block;
-
-    padding:5px 12px;
-
-    border-radius:20px;
-
-    background:#e5e5e5;
-
-    color:#14213d;
-
-    font-size:.85rem;
-
-    margin-bottom:12px;
-
-    font-weight:600;
+    padding: 24px;
 
 }
 
-.card-title{
+.card-category {
 
-    font-size:1.25rem;
+    display: inline-flex;
 
-    color:#14213d;
+    align-items: center;
 
-    margin-bottom:10px;
+    padding: 7px 15px;
 
-}
+    border-radius: 999px;
 
-.card-price{
+    background: #fff7e6;
 
-    font-size:1.6rem;
+    color: var(--primary-dark);
 
-    font-weight:700;
+    font-size: .8rem;
 
-    color:#fca311;
-
-    margin-bottom:10px;
+    font-weight: 700;
 
 }
 
-.card-seller{
+.card-title {
 
-    color:#666666;
+    margin-top: 18px;
 
-    margin-bottom:20px;
+    font-size: 1.35rem;
 
-}
-
-.card-actions{
-
-    display:flex;
-
-    gap:10px;
+    font-weight: 700;
 
 }
 
-.card-actions button{
+.card-price {
 
-    flex:1;
+    margin: 18px 0;
 
-    padding:12px;
+    font-size: 2rem;
 
-    border-radius:10px;
+    font-weight: 800;
 
-    border:none;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-    font-weight:600;
+    color: var(--primary);
 
 }
 
-.view-btn{
+.card-seller {
 
-    background:#14213d;
+    color: #666666;
 
-    color:#ffffff;
+    margin-bottom: 20px;
 
 }
 
-.view-btn:hover{
+.card-actions {
 
-    background:#000000;
+    margin-top: 25px;
+
+}
+
+.card-actions button {
+
+    flex: 1;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    border: none;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+    font-weight: 600;
+
+}
+
+.view-btn {
+
+    background: #14213d;
+
+    color: #ffffff;
+
+}
+
+.view-btn:hover {
+
+    background: #000000;
 
 }
 
@@ -264,33 +279,33 @@
    EMPTY STATE
 ========================================== */
 
-.empty-state{
+.empty-state {
 
-    grid-column:1/-1;
+    grid-column: 1/-1;
 
-    text-align:center;
+    text-align: center;
 
-    padding:80px 20px;
+    padding: 80px 20px;
 
-    background:#ffffff;
+    background: #ffffff;
 
-    border-radius:15px;
+    border-radius: 15px;
 
-    border:1px solid #e5e5e5;
-
-}
-
-.empty-state h2{
-
-    color:#14213d;
-
-    margin-bottom:10px;
+    border: 1px solid #e5e5e5;
 
 }
 
-.empty-state p{
+.empty-state h2 {
 
-    color:#666666;
+    color: #14213d;
+
+    margin-bottom: 10px;
+
+}
+
+.empty-state p {
+
+    color: #666666;
 
 }
 
@@ -298,31 +313,31 @@
    RESPONSIVE
 ========================================== */
 
-@media(max-width:768px){
+@media(max-width:768px) {
 
-    .marketplace{
+    .marketplace {
 
-        padding:40px 20px;
-
-    }
-
-    .marketplace-header{
-
-        flex-direction:column;
-
-        align-items:flex-start;
+        padding: 40px 20px;
 
     }
 
-    .search-bar{
+    .marketplace-header {
 
-        flex-direction:column;
+        flex-direction: column;
+
+        align-items: flex-start;
 
     }
 
-    .search-bar select{
+    .search-bar {
 
-        width:100%;
+        flex-direction: column;
+
+    }
+
+    .search-bar select {
+
+        width: 100%;
 
     }
 

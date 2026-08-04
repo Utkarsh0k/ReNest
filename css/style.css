@@ -361,6 +361,98 @@ nav li a:hover::after{
     animation:float 5s ease-in-out infinite;
 
 }
+/* ===========================
+   HERO SEARCH
+=========================== */
+
+.hero-search{
+
+    margin-top:40px;
+
+    display:flex;
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+
+}
+
+.hero-search input{
+
+    flex:1;
+
+    border:none;
+
+    padding:20px;
+
+    font-size:16px;
+
+}
+
+.hero-search input:focus{
+
+    outline:none;
+
+}
+
+.hero-search button{
+
+    padding:0 28px;
+
+    background:var(--primary);
+
+    color:var(--secondary);
+
+    font-weight:700;
+
+}
+/*============================
+QUICK STATS
+============================*/
+
+.quick-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+
+}
+
+.stat-box{
+
+    background:white;
+
+    padding:35px;
+
+    text-align:center;
+
+    border-radius:20px;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.stat-box h2{
+
+    color:var(--primary);
+
+    font-size:2.5rem;
+
+}
+
+.stat-box p{
+
+    margin-top:10px;
+
+    color:var(--muted);
+
+}
 /* ==========================================
    FEATURES
 ========================================== */
@@ -508,7 +600,164 @@ nav li a:hover::after{
     font-size:1.1rem;
 
 }
+.popular-categories{
 
+    text-align:center;
+
+}
+
+.category-row{
+
+    margin-top:40px;
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:18px;
+
+}
+
+.category-pill{
+
+    background:white;
+
+    padding:18px 28px;
+
+    border-radius:999px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.category-pill:hover{
+
+    background:var(--primary);
+
+    transform:translateY(-4px);
+
+}
+/*==========================
+FEATURED PRODUCTS
+==========================*/
+
+.featured-products{
+
+    margin-top:110px;
+
+    padding:110px 8%;
+
+    background:linear-gradient(
+
+        to bottom,
+
+        transparent,
+
+        #f8fafc
+
+    );
+
+}
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:end;
+
+    margin-bottom:55px;
+
+}
+
+.section-tag{
+
+    color:var(--primary);
+
+    font-size:.85rem;
+
+    font-weight:700;
+
+    letter-spacing:4px;
+
+}
+
+.section-header h2{
+
+    font-size:clamp(2.2rem,4vw,3.5rem);
+
+    margin-top:10px;
+
+}
+
+.featured-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:28px;
+
+}
+/*==========================
+CTA
+==========================*/
+
+.cta{
+
+    text-align:center;
+
+    padding:120px 8%;
+
+}
+
+.cta h2{
+
+    font-size:3rem;
+
+    margin-bottom:20px;
+
+}
+
+.cta p{
+
+    color:var(--muted);
+
+    margin-bottom:40px;
+
+    font-size:1.15rem;
+
+}
+/*==========================
+TRUST SECTION
+==========================*/
+
+.trusted{
+
+    padding:40px 8%;
+
+    text-align:center;
+
+}
+
+.trusted p{
+
+    color:var(--muted);
+
+    font-size:1.1rem;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+}
 /* ==========================================
    HOW IT WORKS
 ========================================== */
