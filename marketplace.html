@@ -26,54 +26,103 @@
 
         <div class="marketplace-header">
 
-            <h1>Marketplace</h1>
+    <div>
 
-            <a
-                href="sell.html"
-                class="primary">
+        <p class="page-tag">
+            MARKETPLACE
+        </p>
 
-                + Sell Item
+        <h1>
+            Discover Student Deals
+        </h1>
 
-            </a>
+        <p class="page-description">
 
-        </div>
+            Buy books, gadgets, furniture and everyday essentials directly from students around your campus.
 
-        <div class="search-bar">
+        </p>
+        
+<div class="market-highlights">
 
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search products...">
+    <span>✓ Verified Students</span>
 
-            <select id="categoryFilter">
+    <span>✓ Safe Campus Deals</span>
 
-                <option value="All">
-                    All Categories
-                </option>
+    <span>✓ No Platform Fees</span>
 
-                <option value="Books">
-                    Books
-                </option>
+</div>
+    </div>
 
-                <option value="Electronics">
-                    Electronics
-                </option>
+</div>
 
-                <option value="Furniture">
-                    Furniture
-                </option>
+        <div class="market-toolbar">
 
-                <option value="Cycles">
-                    Cycles
-                </option>
+    <div class="search-box">
 
-                <option value="Accessories">
-                    Accessories
-                </option>
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search books, laptops, furniture...">
 
-            </select>
+    </div>
 
-        </div>
+    <a
+        href="sell.html"
+        class="primary">
+
+        + Sell Item
+
+    </a>
+
+</div>
+
+<div class="category-pills">
+
+    <button class="pill active" data-category="All">All</button>
+
+    <button class="pill" data-category="Books">Books</button>
+
+    <button class="pill" data-category="Electronics">Electronics</button>
+
+    <button class="pill" data-category="Furniture">Furniture</button>
+
+    <button class="pill" data-category="Cycles">Cycles</button>
+
+    <button class="pill" data-category="Accessories">Accessories</button>
+
+</div>
+
+<div class="listing-bar">
+
+    <p id="listingCount">
+
+        0 Products
+
+    </p>
+
+    <select id="sortSelect">
+
+        <option value="latest">
+
+            Latest
+
+        </option>
+
+        <option value="low">
+
+            Price: Low to High
+
+        </option>
+
+        <option value="high">
+
+            Price: High to Low
+
+        </option>
+
+    </select>
+
+</div>
 
         <div
             id="productContainer"

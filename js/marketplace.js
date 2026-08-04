@@ -7,57 +7,55 @@
 // ==========================================
 
 const sampleProducts = [
+  {
+    id: 1,
+    title: "Engineering Mathematics Book",
+    description: "Almost new AKTU Mathematics book. No markings.",
+    category: "Books",
+    price: 450,
+    seller: "Rahul",
+    image: "assets/images/products/book.jpg",
+  },
 
-    {
-        id: 1,
-        title: "Engineering Mathematics Book",
-        description: "Almost new AKTU Mathematics book. No markings.",
-        category: "Books",
-        price: 450,
-        seller: "Rahul",
-        image: "assets/images/products/book.jpg"
-    },
+  {
+    id: 2,
+    title: "HP Scientific Calculator",
+    description: "Perfect condition. Ideal for engineering students.",
+    category: "Electronics",
+    price: 700,
+    seller: "Priya",
+    image: "assets/images/products/calculator.jpg",
+  },
 
-    {
-        id: 2,
-        title: "HP Scientific Calculator",
-        description: "Perfect condition. Ideal for engineering students.",
-        category: "Electronics",
-        price: 700,
-        seller: "Priya",
-        image: "assets/images/products/calculator.jpg"
-    },
+  {
+    id: 3,
+    title: "Study Chair",
+    description: "Comfortable chair with adjustable height.",
+    category: "Furniture",
+    price: 1200,
+    seller: "Aman",
+    image: "assets/images/products/chair.jpg",
+  },
 
-    {
-        id: 3,
-        title: "Study Chair",
-        description: "Comfortable chair with adjustable height.",
-        category: "Furniture",
-        price: 1200,
-        seller: "Aman",
-        image: "assets/images/products/chair.jpg"
-    },
+  {
+    id: 4,
+    title: "Mountain Bicycle",
+    description: "Well maintained bicycle. Used for one semester.",
+    category: "Cycles",
+    price: 3800,
+    seller: "Rohit",
+    image: "assets/images/products/cycle.jpg",
+  },
 
-    {
-        id: 4,
-        title: "Mountain Bicycle",
-        description: "Well maintained bicycle. Used for one semester.",
-        category: "Cycles",
-        price: 3800,
-        seller: "Rohit",
-        image: "assets/images/products/cycle.jpg"
-    },
-
-    {
-        id: 5,
-        title: "Laptop Backpack",
-        description: "Water resistant backpack with laptop compartment.",
-        category: "Accessories",
-        price: 650,
-        seller: "Sneha",
-        image: "assets/images/products/bag.jpg"
-    }
-
+  {
+    id: 5,
+    title: "Laptop Backpack",
+    description: "Water resistant backpack with laptop compartment.",
+    category: "Accessories",
+    price: 650,
+    seller: "Sneha",
+    image: "assets/images/products/bag.jpg",
+  },
 ];
 
 // ==========================================
@@ -65,32 +63,25 @@ const sampleProducts = [
 // ==========================================
 
 if (!localStorage.getItem("products")) {
+  localStorage.setItem(
+    "products",
 
-    localStorage.setItem(
-
-        "products",
-
-        JSON.stringify(sampleProducts)
-
-    );
-
+    JSON.stringify(sampleProducts),
+  );
 }
 
 const productContainer = document.getElementById("productContainer");
 const searchInput = document.getElementById("searchInput");
-const categoryFilter = document.getElementById("categoryFilter");
 
 // ==========================================
 // Render Products
 // ==========================================
 
 function displayProducts(productList) {
+  productContainer.innerHTML = "";
 
-    productContainer.innerHTML = "";
-
-    if (productList.length === 0) {
-
-        productContainer.innerHTML = `
+  if (productList.length === 0) {
+    productContainer.innerHTML = `
 
             <div class="empty-state">
 
@@ -102,75 +93,85 @@ function displayProducts(productList) {
 
         `;
 
-        return;
+    return;
+  }
 
-    }
+  productList.forEach((product) => {
+    productContainer.innerHTML += `
 
-    productList.forEach(product => {
+    <div class="product-card">
 
-        productContainer.innerHTML += `
+        <div class="card-image">
 
-            <div class="product-card">
+            <img
+                src="${product.image || "assets/images/no-image.png"}"
+                alt="${product.title}"
+            >
 
-                <img
-                    src="${product.image || "assets/images/no-image.png"}"
-                    alt="${product.title}"
-                >
+            <span class="condition-badge">
 
-                <div class="card-body">
+                ${product.condition || "Used"}
 
-                    <span class="card-category">
+            </span>
 
-                        ${product.category}
+        </div>
 
-                    </span>
+        <div class="card-body">
 
-                    <h3 class="card-title">
+            <span class="card-category">
 
-                        ${product.title}
+                ${product.category}
 
-                    </h3>
+            </span>
 
-                    <p>
+            <h3 class="card-title">
 
-                        ${product.description
-                            ? product.description.substring(0,60) + "..."
-                            : "No description available."}
+                ${product.title}
 
-                    </p>
+            </h3>
 
-                    <p class="card-price">
+           
 
-    ${formatPrice(product.price)}
+            <p class="card-price">
 
-</p>
+                ${formatPrice(product.price)}
 
-                    <p class="card-seller">
+            </p>
 
-                        Seller: ${product.seller}
+            <div class="card-bottom">
 
-                    </p>
+    <span class="seller-name">
 
-                    <div class="card-actions">
+        ${product.seller}
 
-                        <button
-                            class="view-btn"
-                            onclick="viewProduct(${product.id})">
+    </span>
 
-                            View Details
+    <button
 
-                        </button>
+        class="view-btn"
 
-                    </div>
+        onclick="viewProduct(${product.id})">
 
-                </div>
+        View →
 
-            </div>
+    </button>
 
-        `;
+</div>
 
-    });
+            <button
+                class="primary"
+                onclick="viewProduct(${product.id})">
 
+                View Details
+
+            </button>
+
+        </div>
+
+    </div>
+
+    `;
+  });
 }
 
 // ==========================================
@@ -178,37 +179,17 @@ function displayProducts(productList) {
 // ==========================================
 
 function filterProducts() {
+  const products = JSON.parse(localStorage.getItem("products")) || [];
 
-    const products = JSON.parse(
+  const search = searchInput.value.toLowerCase().trim();
 
-        localStorage.getItem("products")
+  const filtered = products.filter((product) => {
+    const matchesSearch = product.title.toLowerCase().includes(search);
 
-    ) || [];
+    return matchesSearch;
+  });
 
-    const search = searchInput.value.toLowerCase().trim();
-
-    const category = categoryFilter.value;
-
-    const filtered = products.filter(product => {
-
-        const matchesSearch = product.title
-            .toLowerCase()
-            .includes(search);
-
-        const matchesCategory =
-
-            category === "All"
-
-            ||
-
-            product.category === category;
-
-        return matchesSearch && matchesCategory;
-
-    });
-
-    displayProducts(filtered);
-
+  displayProducts(filtered);
 }
 
 // ==========================================
@@ -216,11 +197,9 @@ function filterProducts() {
 // ==========================================
 
 function viewProduct(id) {
+  localStorage.setItem("selectedProduct", id);
 
-    localStorage.setItem("selectedProduct", id);
-
-    window.location.href = "product.html";
-
+  window.location.href = "product.html";
 }
 
 // ==========================================
@@ -228,20 +207,12 @@ function viewProduct(id) {
 // ==========================================
 
 searchInput.addEventListener(
+  "input",
 
-    "input",
-
-    filterProducts
-
+  filterProducts,
 );
 
-categoryFilter.addEventListener(
 
-    "change",
-
-    filterProducts
-
-);
 
 // ==========================================
 // Initial Load
