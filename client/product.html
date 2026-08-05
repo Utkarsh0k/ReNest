@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Details | ReNest</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product.css">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Product Details -->
+    <section class="product-page">
+
+        <a href="marketplace.html" class="back-link">
+
+            ← Back to Marketplace
+
+        </a>
+        <section class="product-details">
+
+
+            <div class="product-image">
+
+                <img id="productImage" alt="Product Image">
+
+            </div>
+
+            <div class="product-info">
+                <div class="product-status">
+
+                    Available
+
+                </div>
+                <span id="productCategory" class="category-badge">
+
+                </span>
+
+                <h1 id="productTitle"></h1>
+
+                <div class="product-summary">
+
+                    <h2 id="productPrice"></h2>
+
+                    <p id="productDescription"></p>
+
+                </div>
+
+                <div class="seller-box">
+
+                    <div class="seller-header">
+
+                        <div class="seller-avatar" id="sellerAvatar">
+
+
+                            R
+
+                        </div>
+
+                        <div>
+
+                            <h3 id="sellerName">
+
+                                Seller Name
+
+                            </h3>
+
+                            <p class="verified">
+
+                                ✓ Verified Student
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <p>
+
+                        <strong>Email:</strong>
+
+                        <span id="sellerEmail"></span>
+
+                    </p>
+
+                    <p>
+
+                        <strong>Status:</strong>
+
+                        <span id="sellerStatus"></span>
+
+                    </p>
+
+                    <p>
+
+                        <strong>Posted:</strong>
+
+                        <span id="sellerPosted"></span>
+
+                    </p>
+
+                </div>
+                <div class="product-specs">
+
+                    <div>
+
+                        <span>Category</span>
+
+                        <strong id="specCategory"></strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Status</span>
+
+                        <strong id="specStatus">Available</strong>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+    </section>
+
+    <!-- Toast -->
+
+    <div id="toast"></div>
+
+    <!-- Scripts -->
+
+    <script src="js/script.js"></script>
+
+    <script src="js/navbar.js"></script>
+
+    <script src="js/authGuard.js"></script>
+
+    <script src="js/product.js"></script>
+
+</body>
+
+</html>
