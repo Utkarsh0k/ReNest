@@ -2,13 +2,9 @@
    ReNest Marketplace
 ========================================== */
 
-
-
 // ==========================================
 // Initialize Products
 // ==========================================
-
-
 
 const productContainer = document.getElementById("productContainer");
 const searchInput = document.getElementById("searchInput");
@@ -109,13 +105,13 @@ function displayProducts(productList) {
 
             
 
-            <button
-                class="primary"
-                onclick="viewProduct('${product._id}')"
+           <button
+    class="primary"
+    onclick="viewProduct('${product._id}')">
 
-                View Details
+    View Details
 
-            </button>
+</button>
 
         </div>
 
@@ -166,7 +162,7 @@ function filterProducts() {
 // ==========================================
 
 function viewProduct(productId) {
-    window.location.href = `product.html?id=${productId}`;
+  window.location.href = `product.html?id=${productId}`;
 }
 
 // ==========================================
