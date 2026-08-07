@@ -1,99 +1,389 @@
-const currentUser = JSON.parse(
-    localStorage.getItem("currentUser")
-);
+/* ==========================================
+   ReNest Profile
+========================================== */
 
-if (!currentUser) {
+const API_AUTH = "http://localhost:5000/api/auth";
+const API_PRODUCTS = "http://localhost:5000/api/products";
 
+const token = localStorage.getItem("token");
+
+if (!token) {
     window.location.href = "login.html";
-
 }
 
-document.getElementById("userName").textContent =
-    currentUser.name;
+loadProfile();
 
-document.getElementById("userEmail").textContent =
-    currentUser.email;
+document
+    .getElementById("editProfileBtn")
+    .addEventListener("click", () => {
 
-document.getElementById("avatarLetter").textContent =
-    currentUser.name.charAt(0).toUpperCase();
+        document
+            .getElementById("profileModal")
+            .classList.remove("hidden");
 
-const products = JSON.parse(
-    localStorage.getItem("products")
-) || [];
+    });
 
-/* ==========================================
-   User Statistics
-========================================== */
+document
+    .getElementById("cancelEdit")
+    .addEventListener("click", () => {
 
-const myProducts = products.filter(product =>
+        document
+            .getElementById("profileModal")
+            .classList.add("hidden");
 
-    product.sellerEmail === currentUser.email
+    });
 
-);
-
-const totalListings = myProducts.length;
-
-const totalValue = myProducts.reduce(
-
-    (sum, product) => sum + product.price,
-
-    0
-
-);
-
-document.getElementById("listingCount").textContent =
-    totalListings;
-
-/* ==========================================
-   Add More Stats
-========================================== */
-
-const stats = document.querySelector(".stats");
-
-stats.innerHTML = `
-
-    <div class="stat">
-
-        <h3>${totalListings}</h3>
-
-        <span>Listings</span>
-
-    </div>
-
-    <div class="stat">
-
-        <h3>₹${totalValue}</h3>
-
-        <span>Total Value</span>
-
-    </div>
-
-`;
-
-/* ==========================================
-   Logout
-========================================== */
+document
+    .getElementById("saveProfile")
+    .addEventListener("click", saveProfile);
 
 document
     .getElementById("logoutBtn")
-    .addEventListener("click", () => {
+    .addEventListener("click", logout);
 
-        const confirmLogout = confirm(
+/* ==========================================
+   LOAD PROFILE
+========================================== */
 
-            "Are you sure you want to logout?"
+async function loadProfile() {
+
+    try {
+
+        const response = await fetch(
+
+            `${API_AUTH}/profile`,
+
+            {
+
+                headers: {
+
+                    Authorization: `Bearer ${token}`
+
+                }
+
+            }
 
         );
 
-        if (!confirmLogout) return;
+        const user = await response.json();
 
-        localStorage.removeItem("currentUser");
+        if (!response.ok) {
 
-        showToast("Logged Out Successfully", "success");
+            throw new Error(user.message);
 
-        setTimeout(() => {
+        }
 
-            window.location.href = "index.html";
+        renderUser(user);
 
-        }, 1000);
+        loadProducts(user);
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        showToast(err.message, "error");
+
+    }
+
+}
+
+/* ==========================================
+   USER
+========================================== */
+
+function renderUser(user) {
+
+    document.getElementById("userName").textContent =
+        user.name;
+
+    document.getElementById("userEmail").textContent =
+        user.email;
+
+    document.getElementById("userCollege").textContent =
+        user.college || "-";
+
+    document.getElementById("userBranch").textContent =
+        user.branch || "-";
+
+    document.getElementById("userYear").textContent =
+        user.year || "-";
+
+    document.getElementById("userPhone").textContent =
+        user.phone || "-";
+
+    document.getElementById("userBio").textContent =
+        user.bio || "No bio added yet.";
+
+    document.getElementById("collegeBranch").textContent =
+        `${user.branch || ""} ${user.year || ""}`;
+
+    document.getElementById("joinedDate").textContent =
+        `Member Since ${new Date(user.createdAt).toLocaleDateString()}`;
+
+    if (user.profileImage) {
+
+        document.getElementById("profileImage").src =
+            user.profileImage;
+
+        document
+            .getElementById("avatarFallback")
+            .style.display = "none";
+
+    }
+
+    else {
+
+        document
+            .getElementById("avatarFallback")
+            .textContent =
+            user.name.charAt(0).toUpperCase();
+
+    }
+
+    document.getElementById("editCollege").value =
+        user.college || "";
+
+    document.getElementById("editBranch").value =
+        user.branch || "";
+
+    document.getElementById("editYear").value =
+        user.year || "";
+
+    document.getElementById("editPhone").value =
+        user.phone || "";
+
+    document.getElementById("editBio").value =
+        user.bio || "";
+
+    document.getElementById("editImage").value =
+        user.profileImage || "";
+
+}
+
+/* ==========================================
+   PRODUCTS
+========================================== */
+
+async function loadProducts(user) {
+
+    const response = await fetch(
+
+        API_PRODUCTS,
+
+        {
+
+            headers: {
+
+                Authorization: `Bearer ${token}`
+
+            }
+
+        }
+
+    );
+
+    const products = await response.json();
+
+    const mine = products.filter(
+
+        p => p.seller &&
+             p.seller._id === user._id
+
+    );
+
+    document.getElementById("listingCount").textContent =
+        mine.length;
+
+    document.getElementById("availableCount").textContent =
+        mine.filter(
+
+            p => p.status !== "Sold"
+
+        ).length;
+
+    document.getElementById("soldCount").textContent =
+        mine.filter(
+
+            p => p.status === "Sold"
+
+        ).length;
+
+    const value = mine.reduce(
+
+        (sum, p) => sum + p.price,
+
+        0
+
+    );
+
+    document.getElementById("totalValue").textContent =
+        formatPrice(value);
+
+    const recent =
+        document.getElementById("recentListings");
+
+    recent.innerHTML = "";
+
+    if (mine.length === 0) {
+
+        recent.innerHTML = `
+
+        <p>No Listings Yet</p>
+
+        `;
+
+        return;
+
+    }
+
+    mine.slice(0,3).forEach(product=>{
+
+        recent.innerHTML+=`
+
+        <div class="listing">
+
+            <img
+                src="${product.image}"
+                alt="${product.title}">
+
+            <div>
+
+                <h4>
+
+                    ${product.title}
+
+                </h4>
+
+                <div class="listing-price">
+
+                    ${formatPrice(product.price)}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
 
     });
+
+}
+
+/* ==========================================
+   SAVE PROFILE
+========================================== */
+
+async function saveProfile(){
+
+    try{
+
+        const body={
+
+            college:
+            document.getElementById("editCollege").value,
+
+            branch:
+            document.getElementById("editBranch").value,
+
+            year:
+            document.getElementById("editYear").value,
+
+            phone:
+            document.getElementById("editPhone").value,
+
+            bio:
+            document.getElementById("editBio").value,
+
+            profileImage:
+            document.getElementById("editImage").value
+
+        };
+
+        const response=await fetch(
+
+            `${API_AUTH}/profile`,
+
+            {
+
+                method:"PUT",
+
+                headers:{
+
+                    "Content-Type":"application/json",
+
+                    Authorization:`Bearer ${token}`
+
+                },
+
+                body:JSON.stringify(body)
+
+            }
+
+        );
+
+        const data=await response.json();
+
+        if(!response.ok){
+
+            throw new Error(data.message);
+
+        }
+
+        showToast(
+
+            "Profile Updated",
+
+            "success"
+
+        );
+
+        document
+        .getElementById("profileModal")
+        .classList.add("hidden");
+
+        loadProfile();
+
+    }
+
+    catch(err){
+
+        showToast(
+
+            err.message,
+
+            "error"
+
+        );
+
+    }
+
+}
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+function logout(){
+
+    if(!confirm("Logout?")) return;
+
+    localStorage.removeItem("token");
+
+    showToast(
+
+        "Logged Out",
+
+        "success"
+
+    );
+
+    setTimeout(()=>{
+
+        window.location.href="index.html";
+
+    },800);
+
+}

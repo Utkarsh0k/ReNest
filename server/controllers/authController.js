@@ -83,7 +83,8 @@ exports.login = async (req, res) => {
         const token = jwt.sign(
 
             {
-                id: user._id
+                id:user._id,
+name:user.name
             },
 
             process.env.JWT_SECRET,
@@ -119,6 +120,80 @@ exports.login = async (req, res) => {
         res.status(500).json({
 
             message: err.message
+
+        });
+
+    }
+
+};
+exports.getProfile = async (req,res)=>{
+
+    try{
+
+        const user=await User
+        .findById(req.user.id)
+        .select("-password");
+
+        res.json(user);
+
+    }
+
+    catch(err){
+
+        res.status(500).json({
+            message:err.message
+        });
+
+    }
+
+};
+exports.updateProfile = async(req,res)=>{
+
+    try{
+
+        const{
+
+            name,
+            college,
+            branch,
+            year,
+            phone,
+            bio,
+            profileImage
+
+        }=req.body;
+
+        const user=await User.findById(req.user.id);
+
+        if(!user){
+
+            return res.status(404).json({
+
+                message:"User not found"
+
+            });
+
+        }
+
+        if (name) user.name = name;
+if (college) user.college = college;
+if (branch) user.branch = branch;
+if (year) user.year = year;
+if (phone) user.phone = phone;
+if (bio) user.bio = bio;
+if (profileImage) user.profileImage = profileImage;
+
+        await user.save();
+
+        res.json(user);
+
+    }
+
+    catch(err){
+
+        res.status(500).json({
+
+            message:err.message
 
         });
 

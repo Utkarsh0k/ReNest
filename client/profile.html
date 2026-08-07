@@ -5,8 +5,9 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>My Profile | ReNest</title>
 
@@ -17,48 +18,379 @@
 
 <body>
 
-    <!-- Navbar -->
     <div id="navbar"></div>
 
-    <!-- Profile -->
+    <main class="profile-page">
 
-    <section class="profile">
+        <!-- HERO -->
 
-        <div class="profile-card">
+        <section class="profile-hero">
 
-            <div class="avatar">
+            <div class="profile-left">
 
-                <h1 id="avatarLetter">U</h1>
+                <div class="profile-avatar">
 
-            </div>
+                    <img
+                        id="profileImage"
+                        src="assets/images/default-avatar.png"
+                        alt="Profile">
 
-            <h2 id="userName">
+                    <div
+                        id="avatarFallback"
+                        class="avatar-fallback">
 
-                Loading...
+                        U
 
-            </h2>
+                    </div>
 
-            <p id="userEmail"></p>
+                </div>
 
-            <div class="stats">
+                <div>
 
-                <div class="stat">
+                    <span class="profile-badge">
 
-                    <h3 id="listingCount">
-
-                        0
-
-                    </h3>
-
-                    <span>
-
-                        Listings
+                        ⭐ Verified Student
 
                     </span>
+
+                    <h1 id="userName">
+
+                        Loading...
+
+                    </h1>
+
+                    <p
+                        id="collegeBranch"
+                        class="profile-subtitle">
+
+                        Computer Science
+
+                    </p>
+
+                    <p
+                        id="joinedDate"
+                        class="joined-date">
+
+                        Member Since —
+
+                    </p>
 
                 </div>
 
             </div>
+
+            <button
+                id="editProfileBtn"
+                class="primary">
+
+                Edit Profile
+
+            </button>
+
+        </section>
+
+        <!-- STATS -->
+
+        <section class="profile-stats">
+
+            <div class="stat-card">
+
+                <h2 id="listingCount">
+
+                    0
+
+                </h2>
+
+                <p>Listings</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h2 id="availableCount">
+
+                    0
+
+                </h2>
+
+                <p>Available</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h2 id="soldCount">
+
+                    0
+
+                </h2>
+
+                <p>Sold</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h2 id="totalValue">
+
+                    ₹0
+
+                </h2>
+
+                <p>Total Value</p>
+
+            </div>
+
+        </section>
+
+        <!-- MAIN GRID -->
+
+        <section class="profile-grid">
+
+            <!-- LEFT -->
+
+            <div class="profile-column">
+
+                <div class="profile-card">
+
+                    <h2>
+
+                        About
+
+                    </h2>
+
+                    <p id="userBio">
+
+                        No bio added yet.
+
+                    </p>
+
+                </div>
+
+                <div class="profile-card">
+
+                    <h2>
+
+                        Contact Information
+
+                    </h2>
+
+                    <div class="info-row">
+
+                        <span>📧 Email</span>
+
+                        <strong id="userEmail">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+                    <div class="info-row">
+
+                        <span>📱 Phone</span>
+
+                        <strong id="userPhone">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+                    <div class="info-row">
+
+                        <span>🏫 College</span>
+
+                        <strong id="userCollege">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+                    <div class="info-row">
+
+                        <span>🎓 Branch</span>
+
+                        <strong id="userBranch">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+                    <div class="info-row">
+
+                        <span>📅 Year</span>
+
+                        <strong id="userYear">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="profile-column">
+
+                <div class="profile-card">
+
+                    <div class="section-header">
+
+                        <h2>
+
+                            Recent Listings
+
+                        </h2>
+
+                    </div>
+
+                    <div
+                        id="recentListings">
+
+                    </div>
+
+                </div>
+
+                <div class="profile-card">
+
+                    <h2>
+
+                        Achievements
+
+                    </h2>
+
+                    <div class="achievement-grid">
+
+                        <div class="achievement">
+
+                            🏅
+
+                            <span>
+
+                                Verified Student
+
+                            </span>
+
+                        </div>
+
+                        <div class="achievement">
+
+                            📦
+
+                            <span>
+
+                                First Listing
+
+                            </span>
+
+                        </div>
+
+                        <div class="achievement">
+
+                            ⭐
+
+                            <span>
+
+                                Active Seller
+
+                            </span>
+
+                        </div>
+
+                        <div class="achievement">
+
+                            💰
+
+                            <span>
+
+                                Marketplace Member
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- EDIT PROFILE MODAL -->
+
+        <div
+            id="profileModal"
+            class="profile-modal hidden">
+
+            <div class="modal-content">
+
+                <h2>
+
+                    Edit Profile
+
+                </h2>
+
+                <input
+                    id="editCollege"
+                    placeholder="College">
+
+                <input
+                    id="editBranch"
+                    placeholder="Branch">
+
+                <input
+                    id="editYear"
+                    placeholder="Year">
+
+                <input
+                    id="editPhone"
+                    placeholder="Phone">
+
+                <input
+                    id="editImage"
+                    placeholder="Profile Image URL">
+
+                <textarea
+                    id="editBio"
+                    placeholder="About Yourself"></textarea>
+
+                <div class="modal-buttons">
+
+                    <button
+                        id="saveProfile"
+                        class="primary">
+
+                        Save
+
+                    </button>
+
+                    <button
+                        id="cancelEdit"
+                        class="secondary">
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="logout-wrapper">
 
             <button
                 id="logoutBtn"
@@ -70,20 +402,13 @@
 
         </div>
 
-    </section>
-
-    <!-- Toast -->
+    </main>
 
     <div id="toast"></div>
 
-    <!-- Scripts -->
-
     <script src="js/script.js"></script>
-
     <script src="js/navbar.js"></script>
-
     <script src="js/authGuard.js"></script>
-
     <script src="js/profile.js"></script>
 
 </body>
