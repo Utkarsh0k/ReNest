@@ -68,21 +68,13 @@ function updateView() {
 
 updateView();
 
-/* ==========================================
-   Users
-========================================== */
 
-let users = JSON.parse(
-
-    localStorage.getItem("users")
-
-) || [];
 
 /* ==========================================
    Register
 ========================================== */
 
-registerForm.addEventListener("submit", (e) => {
+registerForm.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
@@ -147,66 +139,57 @@ registerForm.addEventListener("submit", (e) => {
 
     }
 
-    const exists = users.find(
+    try {
 
-        user => user.email === email
+    const response = await fetch(
+        "http://localhost:5000/api/auth/register",
+        {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                name,
+                email,
+                password
+
+            })
+
+        }
 
     );
 
-    if (exists) {
+    const data = await response.json();
 
-        showToast(
+    if (!response.ok) {
 
-            "Email already registered.",
-
-            "error"
-
-        );
+        showToast(data.message, "error");
 
         return;
 
     }
 
-    const user = {
-
-        id: Date.now(),
-
-        name,
-
-        email,
-
-        password
-
-    };
-
-    users.push(user);
-
-    localStorage.setItem(
-
-        "users",
-
-        JSON.stringify(users)
-
-    );
-
-    localStorage.setItem(
-
-        "currentUser",
-
-        JSON.stringify(user)
-
-    );
-
-    showToast(
-
-        "Account Created Successfully!",
-
-        "success"
-
-    );
+    showToast("Account Created Successfully!", "success");
 
     registerForm.reset();
 
+    isLogin = true;
+
+    updateView();
+
+}
+
+catch {
+
+    showToast("Server Error", "error");
+
+}
     setTimeout(() => {
 
         window.location.href = "marketplace.html";
@@ -219,7 +202,7 @@ registerForm.addEventListener("submit", (e) => {
    Login
 ========================================== */
 
-loginForm.addEventListener("submit", (e) => {
+loginForm.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
@@ -232,23 +215,38 @@ loginForm.addEventListener("submit", (e) => {
     const password = document
         .getElementById("loginPassword")
         .value;
+try {
 
-    const user = users.find(u =>
+    const response = await fetch(
 
-        u.email === email &&
-        u.password === password
+        "http://localhost:5000/api/auth/login",
+
+        {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                email,
+                password
+
+            })
+
+        }
 
     );
 
-    if (!user) {
+    const data = await response.json();
 
-        showToast(
+    if (!response.ok) {
 
-            "Invalid Email or Password.",
-
-            "error"
-
-        );
+        showToast(data.message, "error");
 
         return;
 
@@ -256,15 +254,23 @@ loginForm.addEventListener("submit", (e) => {
 
     localStorage.setItem(
 
+        "token",
+
+        data.token
+
+    );
+
+    localStorage.setItem(
+
         "currentUser",
 
-        JSON.stringify(user)
+        JSON.stringify(data.user)
 
     );
 
     showToast(
 
-        `Welcome ${user.name}!`,
+        `Welcome ${data.user.name}!`,
 
         "success"
 
@@ -276,4 +282,12 @@ loginForm.addEventListener("submit", (e) => {
 
     }, 800);
 
+}
+
+catch {
+
+    showToast("Server Error", "error");
+
+}
+    
 });

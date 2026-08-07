@@ -8,12 +8,13 @@ const {
 
     createProduct,
 
-    getProducts
+    getProducts,
+
+    getProduct
 
 } = require("../controllers/productController");
-
 router.get("/", getProducts);
-
+router.get("/:id", getProduct);
 router.post("/", protect, createProduct);
 
 module.exports = router;

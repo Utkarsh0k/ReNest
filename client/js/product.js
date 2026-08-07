@@ -1,8 +1,6 @@
-const id = Number(
+const params = new URLSearchParams(window.location.search);
 
-    localStorage.getItem("selectedProduct")
-
-);
+const id = params.get("id");
 
 if (!id) {
 
@@ -10,18 +8,45 @@ if (!id) {
 
 }
 
-const products = JSON.parse(
+loadProduct();
 
-    localStorage.getItem("products")
+async function loadProduct() {
 
-) || [];
+    try {
 
-const product = products.find(
+        const response = await fetch(
 
-    p => p.id === id
+            `http://localhost:5000/api/products/${id}`
 
-);
+        );
 
+        if (!response.ok) {
+
+            window.location.href = "marketplace.html";
+
+            return;
+
+        }
+
+        const product = await response.json();
+
+        renderProduct(product);
+
+    }
+
+    catch {
+
+        showToast(
+
+            "Unable to load product.",
+
+            "error"
+
+        );
+
+    }
+
+}
 if (!product) {
 
     window.location.href = "marketplace.html";
@@ -59,10 +84,10 @@ document.getElementById("specStatus").textContent =
 ========================================== */
 
 document.getElementById("sellerName").textContent =
-    product.seller;
+    product.seller.name;
 
 document.getElementById("sellerEmail").textContent =
-    product.sellerEmail || "Not Available";
+    product.seller.email || "Not Available";
 
 document.getElementById("sellerStatus").textContent =
     product.status || "Available";
@@ -71,7 +96,7 @@ document.getElementById("sellerPosted").textContent =
     product.postedOn || "Recently";
 
 document.getElementById("sellerAvatar").textContent =
-    product.seller.charAt(0).toUpperCase();
+    product.seller.name.charAt(0).toUpperCase();
 
 /* ==========================================
    Contact Seller
@@ -83,11 +108,11 @@ document
 
 .addEventListener("click", () => {
 
-    if (product.sellerEmail) {
+    if (product.seller.email) {
 
         window.location.href =
 
-            `mailto:${product.sellerEmail}?subject=Interested in ${product.title}`;
+            `mailto:${product.seller.email}?subject=Interested in ${product.title}`;
 
     } else {
 

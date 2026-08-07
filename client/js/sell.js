@@ -2,6 +2,8 @@
    ReNest - Sell Item
 ========================================== */
 
+const API_URL = "http://localhost:5000/api/products";
+
 const dropArea = document.getElementById("dropArea");
 const imageInput = document.getElementById("imageInput");
 const browseBtn = document.getElementById("browseBtn");
@@ -15,9 +17,7 @@ let imageData = "";
 ========================================== */
 
 browseBtn.addEventListener("click", () => {
-
     imageInput.click();
-
 });
 
 /* ==========================================
@@ -25,13 +25,11 @@ browseBtn.addEventListener("click", () => {
 ========================================== */
 
 imageInput.addEventListener("change", () => {
-
     const file = imageInput.files[0];
 
     if (!file) return;
 
     loadImage(file);
-
 });
 
 /* ==========================================
@@ -39,23 +37,16 @@ imageInput.addEventListener("change", () => {
 ========================================== */
 
 dropArea.addEventListener("dragover", (e) => {
-
     e.preventDefault();
-
     dropArea.classList.add("dragover");
-
 });
 
 dropArea.addEventListener("dragleave", () => {
-
     dropArea.classList.remove("dragover");
-
 });
 
 dropArea.addEventListener("drop", (e) => {
-
     e.preventDefault();
-
     dropArea.classList.remove("dragover");
 
     const file = e.dataTransfer.files[0];
@@ -63,7 +54,6 @@ dropArea.addEventListener("drop", (e) => {
     if (!file) return;
 
     loadImage(file);
-
 });
 
 /* ==========================================
@@ -98,134 +88,107 @@ function loadImage(file) {
    Submit Product
 ========================================== */
 
-sellForm.addEventListener("submit", (e) => {
+sellForm.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
     const title = document.getElementById("title").value.trim();
-
     const description = document.getElementById("description").value.trim();
-
     const price = Number(document.getElementById("price").value);
-
     const category = document.getElementById("category").value;
-
     const condition = document.getElementById("condition").value;
 
     if (!imageData) {
-
         showToast("Please upload a product image.", "error");
-
         return;
-
     }
 
     if (title.length < 3) {
-
         showToast("Product title is too short.", "error");
-
         return;
-
     }
 
     if (description.length < 10) {
-
         showToast("Description should be at least 10 characters.", "error");
-
         return;
-
     }
 
     if (price <= 0) {
-
         showToast("Please enter a valid price.", "error");
-
         return;
-
     }
 
     if (!category) {
-
         showToast("Please select a category.", "error");
-
         return;
-
     }
 
     if (!condition) {
-
         showToast("Please select the item condition.", "error");
-
         return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        showToast("Please login first.", "error");
+        return;
+    }
+
+    try {
+
+        const response = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+
+            },
+
+            body: JSON.stringify({
+
+                title,
+                description,
+                price,
+                category,
+                condition,
+                image: imageData
+
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to list product.");
+        }
+
+        showToast("Product listed successfully!", "success");
+
+        sellForm.reset();
+
+        imageData = "";
+
+        preview.src = "assets/images/upload.png";
+
+        setTimeout(() => {
+
+            window.location.href = "marketplace.html";
+
+        }, 1000);
 
     }
 
-    const currentUser = JSON.parse(
+    catch (err) {
 
-        localStorage.getItem("currentUser")
+        console.error(err);
 
-    );
+        showToast(err.message, "error");
 
-    const products = JSON.parse(
-
-        localStorage.getItem("products")
-
-    ) || [];
-
-    const product = {
-
-        id: Date.now(),
-
-        title,
-
-        description,
-
-        price,
-
-        category,
-
-        condition,
-
-        image: imageData,
-
-        seller: currentUser ? currentUser.name : "Anonymous",
-
-        sellerEmail: currentUser ? currentUser.email : "",
-
-        status: "Available",
-
-        postedOn: new Date().toLocaleDateString("en-IN")
-
-    };
-
-    products.push(product);
-
-    localStorage.setItem(
-
-        "products",
-
-        JSON.stringify(products)
-
-    );
-
-    showToast(
-
-        `"${title}" listed successfully!`,
-
-        "success"
-
-    );
-
-    sellForm.reset();
-
-    imageData = "";
-
-    preview.src = "assets/images/upload.png";
-
-    setTimeout(() => {
-
-        window.location.href = "marketplace.html";
-
-    }, 1000);
+    }
 
 });
