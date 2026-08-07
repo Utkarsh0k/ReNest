@@ -111,7 +111,7 @@ function displayProducts(productList) {
 
             <button
                 class="primary"
-                onclick="viewProduct(${product.id})">
+                onclick="viewProduct('${product._id}')"
 
                 View Details
 
@@ -165,10 +165,8 @@ function filterProducts() {
 // View Product
 // ==========================================
 
-function viewProduct(id) {
-
-    window.location.href = `product.html?id=${id}`;
-
+function viewProduct(productId) {
+    window.location.href = `product.html?id=${productId}`;
 }
 
 // ==========================================
