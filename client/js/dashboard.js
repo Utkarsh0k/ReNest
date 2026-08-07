@@ -1,54 +1,161 @@
-const currentUser = JSON.parse(
-    localStorage.getItem("currentUser")
-);
+/* ==========================================
+   ReNest Dashboard
+========================================== */
 
-let products = JSON.parse(
-    localStorage.getItem("products")
-) || [];
+const API_URL = "http://localhost:5000/api/products";
 
 const container = document.getElementById("myProducts");
 
-function getMyProducts() {
+const totalListings = document.getElementById("totalListings");
+const availableListings = document.getElementById("availableListings");
+const soldListings = document.getElementById("soldListings");
+const totalValue = document.getElementById("totalValue");
+const welcomeTitle = document.getElementById("welcomeTitle");
 
-    return products.filter(product =>
+document
+    .getElementById("refreshBtn")
+    .addEventListener("click", loadDashboard);
 
-        product.sellerEmail === currentUser.email
+loadDashboard();
 
-    );
+/* ==========================================
+   LOAD DASHBOARD
+========================================== */
+
+async function loadDashboard() {
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
+
+        const response = await fetch(API_URL, {
+
+            headers: {
+
+                Authorization: `Bearer ${token}`
+
+            }
+
+        });
+
+        const products = await response.json();
+
+        if (!response.ok) {
+
+            throw new Error(products.message);
+
+        }
+
+        const payload = parseJwt(token);
+
+        const myProducts = products.filter(product =>
+
+            product.seller &&
+            product.seller._id === payload.id
+
+        );
+
+        renderStats(myProducts);
+
+        renderProducts(myProducts);
+
+        welcomeTitle.textContent =
+            `Welcome Back, ${payload.name || "User"} 👋`;
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        showToast("Unable to load dashboard.", "error");
+
+    }
 
 }
 
-function loadProducts() {
+/* ==========================================
+   STATS
+========================================== */
 
-    products = JSON.parse(
+function renderStats(products) {
 
-        localStorage.getItem("products")
+    totalListings.textContent = products.length;
 
-    ) || [];
+    const available = products.filter(
 
-    const myProducts = getMyProducts();
+        p => p.status !== "Sold"
+
+    ).length;
+
+    const sold = products.filter(
+
+        p => p.status === "Sold"
+
+    ).length;
+
+    const value = products.reduce(
+
+        (sum, p) => sum + p.price,
+
+        0
+
+    );
+
+    availableListings.textContent = available;
+
+    soldListings.textContent = sold;
+
+    totalValue.textContent = formatPrice(value);
+
+}
+
+/* ==========================================
+   PRODUCTS
+========================================== */
+
+function renderProducts(products) {
 
     container.innerHTML = "";
 
-    if (myProducts.length === 0) {
+    if (products.length === 0) {
 
         container.innerHTML = `
 
         <div class="empty-message">
 
-            <h2>No Listings Yet</h2>
+            <div class="empty-icon">
+
+                📦
+
+            </div>
+
+            <h2>
+
+                No Listings Yet
+
+            </h2>
 
             <p>
 
-                Start selling your unused items.
+                Start selling books,
+                furniture or electronics.
 
             </p>
 
-            <br>
+            <a
+                href="sell.html"
+                class="primary">
 
-            <a href="sell.html" class="primary">
-
-                Sell Your First Item
+                Sell First Item
 
             </a>
 
@@ -60,47 +167,17 @@ function loadProducts() {
 
     }
 
-    const totalValue = myProducts.reduce(
+    products.forEach(product => {
 
-        (sum, product) => sum + product.price,
-
-        0
-
-    );
-
-    container.innerHTML += `
-
-        <div class="dashboard-summary">
-
-            <h2>
-
-                ${myProducts.length} Listings
-
-            </h2>
-
-            <h3>
-
-                Total Value ${formatPrice(totalValue)}
-
-            </h3>
-
-        </div>
-
-    `;
-
-    myProducts.forEach(product => {
+        const status = product.status || "Available";
 
         container.innerHTML += `
 
         <div class="dashboard-card">
 
             <img
-
                 src="${product.image}"
-
-                alt="${product.title}"
-
-            >
+                alt="${product.title}">
 
             <div class="dashboard-body">
 
@@ -110,59 +187,65 @@ function loadProducts() {
 
                 </h3>
 
-                <p>
+                <div class="dashboard-meta">
 
-                    ${product.category}
+                    <span>
 
-                </p>
+                        ${product.category}
 
-                <p>
+                    </span>
 
-                    Posted:
+                    <span class="status-pill ${status.toLowerCase()}">
 
-                    ${product.postedOn}
+                        ${status}
 
-                </p>
-
-                <div class="dashboard-price">
-
-                   ${formatPrice(product.price)}
+                    </span>
 
                 </div>
 
-                <p>
+                <div class="dashboard-price">
 
-                    Status:
+                    ${formatPrice(product.price)}
 
-                    <strong>
+                </div>
 
-                        ${product.status}
+                <div class="dashboard-info">
 
-                    </strong>
+                    Posted
+                    ${new Date(product.createdAt)
+                        .toLocaleDateString()}
 
-                </p>
+                </div>
 
                 <div class="dashboard-actions">
 
                     <button
+                        class="secondary"
+                        onclick="viewProduct('${product._id}')">
 
-                        class="primary"
-
-                        onclick="markSold(${product.id})"
-
-                    >
-
-                        Mark Sold
+                        View
 
                     </button>
 
                     <button
+                        class="primary"
+                        onclick="markSold('${product._id}')">
 
+                        Sold
+
+                    </button>
+
+                    <button
+                        class="secondary"
+                        onclick="editProduct('${product._id}')">
+
+                        Edit
+
+                    </button>
+
+                    <button
                         class="delete-btn"
-
-                        onclick="deleteProduct(${product.id})"
-
-                    >
+                        onclick="deleteProduct('${product._id}')">
 
                         Delete
 
@@ -180,74 +263,111 @@ function loadProducts() {
 
 }
 
-function markSold(id) {
+/* ==========================================
+   ACTIONS
+========================================== */
 
-    products = products.map(product => {
+function viewProduct(id) {
 
-        if (product.id === id) {
+    window.location.href =
 
-            product.status = "Sold";
+        `product.html?id=${id}`;
+
+}
+
+function editProduct(id) {
+
+    showToast(
+
+        "Edit feature coming soon.",
+
+        "info"
+
+    );
+
+}
+
+async function deleteProduct(id) {
+
+    if (!confirm("Delete this listing?")) return;
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+
+            `${API_URL}/${id}`,
+
+            {
+
+                method: "DELETE",
+
+                headers: {
+
+                    Authorization:
+                        `Bearer ${token}`
+
+                }
+
+            }
+
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+
+            throw new Error(data.message);
 
         }
 
-        return product;
+        showToast(
 
-    });
+            "Listing Deleted",
 
-    localStorage.setItem(
+            "success"
 
-        "products",
+        );
 
-        JSON.stringify(products)
+        loadDashboard();
 
-    );
+    }
 
-    showToast(
+    catch (err) {
 
-        "Listing marked as Sold",
+        showToast(err.message, "error");
 
-        "success"
-
-    );
-
-    loadProducts();
+    }
 
 }
 
-function deleteProduct(id) {
-
-    const confirmDelete = confirm(
-
-        "Delete this listing?"
-
-    );
-
-    if (!confirmDelete) return;
-
-    products = products.filter(
-
-        product => product.id !== id
-
-    );
-
-    localStorage.setItem(
-
-        "products",
-
-        JSON.stringify(products)
-
-    );
+async function markSold(id) {
 
     showToast(
 
-        "Listing Deleted",
+        "Coming Soon",
 
-        "success"
+        "info"
 
     );
 
-    loadProducts();
-
 }
 
-loadProducts();
+/* ==========================================
+   JWT
+========================================== */
+
+function parseJwt(token) {
+
+    return JSON.parse(
+
+        atob(
+
+            token.split(".")[1]
+
+        )
+
+    );
+
+}

@@ -4,11 +4,10 @@
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>My Dashboard | ReNest</title>
+    <title>Dashboard | ReNest</title>
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
@@ -20,19 +19,174 @@
     <!-- Navbar -->
     <div id="navbar"></div>
 
-    <!-- Dashboard -->
+    <main class="dashboard">
 
-    <section class="dashboard">
+        <!-- =========================
+             HERO
+        ========================== -->
 
-        <h1>My Listings</h1>
+        <section class="dashboard-hero">
 
-        <div
+            <div class="hero-left">
+
+                <p class="page-tag">
+                    MY DASHBOARD
+                </p>
+
+                <h1 id="welcomeTitle">
+                    Welcome Back 👋
+                </h1>
+
+                <p class="hero-description">
+
+                    Manage your listings, keep track of sales,
+                    and monitor everything from one place.
+
+                </p>
+
+            </div>
+
+            <a
+                href="sell.html"
+                class="primary hero-button">
+
+                + Sell New Item
+
+            </a>
+
+        </section>
+
+        <!-- =========================
+             STATS
+        ========================== -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📦
+                </div>
+
+                <div>
+
+                    <h3 id="totalListings">
+                        0
+                    </h3>
+
+                    <p>
+                        Total Listings
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🟢
+                </div>
+
+                <div>
+
+                    <h3 id="availableListings">
+                        0
+                    </h3>
+
+                    <p>
+                        Available
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✅
+                </div>
+
+                <div>
+
+                    <h3 id="soldListings">
+                        0
+                    </h3>
+
+                    <p>
+                        Sold
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <h3 id="totalValue">
+                        ₹0
+                    </h3>
+
+                    <p>
+                        Total Value
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             LISTINGS HEADER
+        ========================== -->
+
+        <section class="dashboard-header">
+
+            <div>
+
+                <h2>
+
+                    My Listings
+
+                </h2>
+
+                <p>
+
+                    View, edit and manage your products.
+
+                </p>
+
+            </div>
+
+            <button
+                class="secondary"
+                id="refreshBtn">
+
+                Refresh
+
+            </button>
+
+        </section>
+
+        <!-- =========================
+             PRODUCTS
+        ========================== -->
+
+        <section
             id="myProducts"
             class="dashboard-grid">
 
-        </div>
+        </section>
 
-    </section>
+    </main>
 
     <!-- Toast -->
 
