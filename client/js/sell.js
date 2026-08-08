@@ -2,7 +2,7 @@
    ReNest - Sell Item
 ========================================== */
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://renest-j8yz.onrender.com/api/products";
 
 const dropArea = document.getElementById("dropArea");
 const imageInput = document.getElementById("imageInput");

@@ -2,7 +2,7 @@
    ReNest Product Details
 ========================================== */
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://renest-j8yz.onrender.com/api/products";
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");

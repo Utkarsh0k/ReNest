@@ -142,7 +142,7 @@ registerForm.addEventListener("submit", async (e) => {
     try {
 
     const response = await fetch(
-        "http://localhost:5000/api/auth/register",
+        "https://renest-j8yz.onrender.com/api/auth/register",
         {
 
             method: "POST",
@@ -219,7 +219,7 @@ try {
 
     const response = await fetch(
 
-        "http://localhost:5000/api/auth/login",
+        "https://renest-j8yz.onrender.com/api/auth/login",
 
         {
 

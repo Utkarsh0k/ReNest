@@ -2,8 +2,8 @@
    ReNest Profile
 ========================================== */
 
-const API_AUTH = "http://localhost:5000/api/auth";
-const API_PRODUCTS = "http://localhost:5000/api/products";
+const API_AUTH = "https://renest-j8yz.onrender.com/api/auth";
+const API_PRODUCTS = "https://renest-j8yz.onrender.com/api/products";
 
 const token = localStorage.getItem("token");
 
