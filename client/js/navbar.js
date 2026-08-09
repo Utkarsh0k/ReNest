@@ -1,153 +1,304 @@
+/* ==========================================
+   ReNest Navbar
+========================================== */
+
+const navbarContainer = document.getElementById("navbar");
+
+if (navbarContainer) {
+    loadNavbar();
+}
+
 async function loadNavbar() {
-
-    const navbar = document.getElementById("navbar");
-
-    if (!navbar) return;
 
     try {
 
         const response = await fetch("components/navbar.html");
 
-        navbar.innerHTML = await response.text();
+        if (!response.ok) {
+            throw new Error("Unable to load navbar");
+        }
 
-    } catch {
+        navbarContainer.innerHTML = await response.text();
 
-        console.error("Unable to load navbar.");
+        setupNavbar();
 
-        return;
+    } catch (error) {
+
+        console.error("Navbar Error:", error);
 
     }
 
-    const currentUser = JSON.parse(
+}
 
-        localStorage.getItem("currentUser")
 
-    );
+/* ==========================================
+   NAVBAR SETUP
+========================================== */
 
-    const authNav = document.getElementById("authNav");
+function setupNavbar() {
 
-    if (!authNav) return;
+    const menuToggle = document.getElementById("menuToggle");
+    const navMenu = document.getElementById("navMenu");
+
+    if (!menuToggle || !navMenu) {
+        return;
+    }
+
 
     /* ==========================================
-       Active Page
+       MOBILE MENU
     ========================================== */
 
-    const currentPage = window.location.pathname
-        .split("/")
-        .pop();
+    menuToggle.addEventListener("click", () => {
 
-    document.querySelectorAll("nav a").forEach(link => {
+        const isOpen = navMenu.classList.toggle("open");
 
-        const href = link.getAttribute("href");
+        menuToggle.classList.toggle("active", isOpen);
 
-        if (href === currentPage) {
+        menuToggle.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
 
-            link.classList.add("active-nav");
+        document.body.classList.toggle(
+            "menu-open",
+            isOpen
+        );
+
+    });
+
+
+    /* ==========================================
+       CLOSE MENU WHEN LINK IS CLICKED
+    ========================================== */
+
+    const navLinks = navMenu.querySelectorAll("a");
+
+    navLinks.forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            closeMobileMenu();
+
+        });
+
+    });
+
+
+    /* ==========================================
+       CLOSE WITH ESCAPE
+    ========================================== */
+
+    document.addEventListener("keydown", event => {
+
+        if (event.key === "Escape") {
+
+            closeMobileMenu();
 
         }
 
     });
 
+
     /* ==========================================
-       Hide Protected Pages
+       CLOSE WHEN CLICKING OUTSIDE
     ========================================== */
 
-    if (!currentUser) {
+    document.addEventListener("click", event => {
 
-        ["sell.html", "dashboard.html", "profile.html"]
+        if (
+            navMenu.classList.contains("open") &&
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target)
+        ) {
 
-        .forEach(page => {
+            closeMobileMenu();
 
-            const link = document.querySelector(
+        }
 
-                `nav a[href="${page}"]`
+    });
 
-            );
 
-            if (link) {
+    /* ==========================================
+       AUTH UI
+    ========================================== */
 
-                link.parentElement.style.display = "none";
+    setupAuthUI();
 
-            }
+}
 
-        });
+
+/* ==========================================
+   CLOSE MOBILE MENU
+========================================== */
+
+function closeMobileMenu() {
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navMenu = document.getElementById("navMenu");
+
+    if (!menuToggle || !navMenu) {
+        return;
+    }
+
+    navMenu.classList.remove("open");
+
+    menuToggle.classList.remove("active");
+
+    menuToggle.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    document.body.classList.remove("menu-open");
+
+}
+
+
+/* ==========================================
+   AUTH UI
+========================================== */
+
+function setupAuthUI() {
+
+    const authNav = document.getElementById("authNav");
+
+    if (!authNav) {
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    const currentUser =
+        localStorage.getItem("currentUser");
+
+    let user = null;
+
+    try {
+
+        user = currentUser
+            ? JSON.parse(currentUser)
+            : null;
+
+    } catch {
+
+        user = null;
+
+    }
+
+
+    /* ==========================================
+       LOGGED IN
+    ========================================== */
+
+    if (token) {
+
+        const name =
+            user?.name ||
+            user?.fullName ||
+            "Student";
 
         authNav.innerHTML = `
 
-            <a href="login.html" class="login-btn">
+            <div class="auth-user">
 
-                Login
+                <span class="auth-greeting">
 
-            </a>
+                    👋 Hi, ${escapeHTML(name)}
+
+                </span>
+
+                <button
+                    class="logout-btn"
+                    id="navbarLogout"
+                    type="button">
+
+                    Logout
+
+                </button>
+
+            </div>
 
         `;
 
-        return;
+        const logoutButton =
+            document.getElementById("navbarLogout");
+
+        logoutButton?.addEventListener(
+            "click",
+            handleLogout
+        );
 
     }
 
     /* ==========================================
-       Logged In
+       LOGGED OUT
     ========================================== */
 
-    authNav.innerHTML = `
+    else {
 
-        <span class="nav-user">
+        authNav.innerHTML = `
 
-            👋 Hi, ${currentUser.name}
+            <div class="auth-actions">
 
-        </span>
+                <a
+                    href="login.html"
+                    class="nav-login">
 
-        <button
+                    Login
 
-            id="logoutNavBtn"
+                </a>
 
-            class="nav-logout"
+                <a
+                    href="login.html#register"
+                    class="nav-register">
 
-        >
+                    Register
 
-            Logout
+                </a>
 
-        </button>
+            </div>
 
-    `;
+        `;
 
-    document
-
-        .getElementById("logoutNavBtn")
-
-        .addEventListener("click", () => {
-
-            localStorage.removeItem(
-
-                "currentUser"
-
-            );
-
-            showToast(
-
-                "Logged Out Successfully",
-
-                "success"
-
-            );
-
-            setTimeout(() => {
-
-                window.location.href =
-
-                    "index.html";
-
-            }, 800);
-
-        });
+    }
 
 }
 
-document.addEventListener(
 
-    "DOMContentLoaded",
+/* ==========================================
+   LOGOUT
+========================================== */
 
-    loadNavbar
+function handleLogout() {
 
-);
+    localStorage.removeItem("token");
+
+    localStorage.removeItem("currentUser");
+
+    closeMobileMenu();
+
+    window.location.href = "index.html";
+
+}
+
+
+/* ==========================================
+   BASIC HTML ESCAPING
+========================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}

@@ -1,33 +1,95 @@
-<nav>
+<nav class="main-navbar">
+
+    <!-- Logo -->
 
     <div class="logo">
 
         <a href="index.html">
 
-            <img src="assets/images/logo.png" alt="ReNest Logo">
+            <img
+                src="assets/images/logo.png"
+                alt="ReNest Logo">
 
         </a>
 
     </div>
 
-    <ul>
 
-        <li><a href="index.html">Home</a></li>
+    <!-- Mobile Menu Button -->
 
-        <li><a href="marketplace.html">Marketplace</a></li>
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false">
 
-        <li><a href="sell.html">Sell Item</a></li>
+        <span></span>
+        <span></span>
+        <span></span>
 
-        <li><a href="dashboard.html">Dashboard</a></li>
+    </button>
 
-        <li><a href="profile.html">Profile</a></li>
+
+    <!-- Navigation -->
+
+    <ul id="navMenu">
+
         <li>
 
-    
+            <a href="index.html">
 
-</li>
+                Home
 
-        <li id="authNav"></li>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="marketplace.html">
+
+                Marketplace
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="sell.html">
+
+                Sell Item
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="dashboard.html">
+
+                Dashboard
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="profile.html">
+
+                Profile
+
+            </a>
+
+        </li>
+
+        <li
+            id="authNav"
+            class="auth-nav">
+
+        </li>
 
     </ul>
 
